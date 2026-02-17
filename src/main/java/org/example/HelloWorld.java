@@ -30,7 +30,7 @@ public class HelloWorld {
             );
             var usersPage = new UsersPage(users, "List of Users");
 
-            ctx.render("users/index.jte", model("page", usersPage));
+            ctx.render("users/page.jte", model("page", usersPage));
         });
 
         app.get("/users/{id}", ctx -> {
