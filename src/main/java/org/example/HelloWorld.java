@@ -3,6 +3,7 @@ package org.example;
 import io.javalin.Javalin;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
+import org.apache.commons.text.StringEscapeUtils;
 import org.example.dto.UserPage;
 import org.example.dto.UsersPage;
 import org.example.model.User;
@@ -23,6 +24,7 @@ public class HelloWorld {
 
         app.get("/users", ctx -> {
             var pageNum = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
+            var escapedId = StringEscapeUtils.escapeHtml4(String.valueOf(pageNum));
             var users = List.of(
                     new User(1L, "Tom", 45),
                     new User(2L, "Janny", 25),
@@ -43,6 +45,6 @@ public class HelloWorld {
         });
 
         app.post("/users", ctx -> ctx.result("POST /users"));
-        app.start();
+        app.start(7070);
     }
 }

@@ -1,18 +1,24 @@
+@import org.example.dto.UsersPage
 @import gg.jte.Content
-@param Content content
 
-<!doctype html>
-<html lang="en">
+@param UsersPage page
+@param Content content
+@param Content footer = null
+
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title>Hexlet Javalin Example</title>
+    @if(page.getHeader() != null)
+        <meta name="description" content="${page.getHeader()}">
+    @endif
+    <title>${page.getHeader()}</title>
 </head>
 <body>
-<p>
-    <a href="/users">Users</a>
-    <a href="/courses">Courses</a>
-</p>
-${content}
+<h1>${page.getHeader()}</h1>
+<div class="content">
+    ${content}
+</div>
+@if (footer != null)
+    <div class="footer">
+        ${footer}
+    </div>
+@endif
 </body>
-</html>
