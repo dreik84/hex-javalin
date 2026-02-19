@@ -23,14 +23,14 @@ public class HelloWorld {
         app.get("/", ctx -> ctx.render("index.jte"));
 
         app.get("/users", ctx -> {
-            var pageNum = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
-            var escapedId = StringEscapeUtils.escapeHtml4(String.valueOf(pageNum));
+//            var pageNum = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
+            var pageNum = ctx.queryParam("page");
             var users = List.of(
                     new User(1L, "Tom", 45),
                     new User(2L, "Janny", 25),
                     new User(3L, "Jack", 18)
             );
-            var usersPage = new UsersPage(users, "List of Users");
+            var usersPage = new UsersPage(users, pageNum);
 
             ctx.render("users/page.jte", model("page", usersPage));
         });
@@ -42,6 +42,14 @@ public class HelloWorld {
             if (id == 5) throw new NotFoundResponse("Entity with id " + id + " not found");
 
             ctx.render("users/show.jte", model("page", page));
+        });
+
+        app.get("/xss/{id}", ctx -> {
+            var id = ctx.pathParam("id");
+            var escapedId = StringEscapeUtils.escapeHtml4(id);
+            ctx.contentType("text/html");
+
+            ctx.result("<h2>" + escapedId + "</h2>");
         });
 
         app.post("/users", ctx -> ctx.result("POST /users"));
