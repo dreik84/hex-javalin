@@ -12,10 +12,14 @@ public class User {
 
     @ToString.Include
     private String name;
+    private String email;
+    private String password;
     private int age;
 
-    public User(String name, int age) {
+    public User(String name, String email, String password, int age) {
         this.name = name;
+        this.email = email;
+        this.password = password;
         this.age = age;
     }
 }
