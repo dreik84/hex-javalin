@@ -3,7 +3,9 @@ package org.example;
 import io.javalin.Javalin;
 import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
+import io.javalin.validation.ValidationException;
 import org.apache.commons.text.StringEscapeUtils;
+import org.example.dto.BuildUserPage;
 import org.example.dto.UserPage;
 import org.example.dto.UsersPage;
 import org.example.model.User;
@@ -24,8 +26,9 @@ public class HelloWorld {
         app.get("/", ctx -> ctx.render("index.jte"));
 
         app.get("users/build", ctx -> {
-            ctx.header("content-type: text/html; charset=UTF-8");
-            ctx.render("users/build.jte");
+            ctx.contentType("text/html; charset=UTF-8");
+            var page = new BuildUserPage();
+            ctx.render("users/build.jte", model("page", page));
         });
 
         app.get("/users", ctx -> {
@@ -61,14 +64,24 @@ public class HelloWorld {
         app.post("/users", ctx -> {
             var name = ctx.formParam("name").trim();
             var email = ctx.formParam("email").trim().toLowerCase();
-            var password = ctx.formParam("password");
-            var passwordConfirmation = ctx.formParam("passwordConfirmation");
             var age = 25;
 
-            var user = new User(name, email, password, age);
-            UserRepository.save(user);
-            ctx.redirect("/users");
+            try {
+                var passwordConfirmation = ctx.formParam("passwordConfirmation");
+                var password = ctx.formParamAsClass("password", String.class)
+                        .check(value -> value.equals(passwordConfirmation), "Пароли не совпадают")
+                        .check(value -> value.length() > 6, "У пароля недостаточная длина")
+                        .get();
+
+                var user = new User(name, email, password, age);
+                UserRepository.save(user);
+                ctx.redirect("/users");
+            } catch (ValidationException e) {
+                var page = new BuildUserPage(name, email, age, e.getErrors());
+                ctx.render("users/build.jte", model("page", page));
+            }
         });
+
         app.start(7070);
     }
 }
