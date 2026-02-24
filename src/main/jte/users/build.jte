@@ -1,3 +1,4 @@
+@import org.example.util.NamedRoutes
 @import org.example.dto.BuildUserPage
 @param BuildUserPage page
 
@@ -11,7 +12,7 @@
     </ul>
 @endif
 
-<form action="/users" method="post">
+<form action="${NamedRoutes.usersPath()}" method="post">
     <div>
         <label>
             Имя

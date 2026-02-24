@@ -10,6 +10,7 @@ import org.example.dto.UserPage;
 import org.example.dto.UsersPage;
 import org.example.model.User;
 import org.example.repository.UserRepository;
+import org.example.util.NamedRoutes;
 
 import java.util.List;
 
@@ -25,13 +26,15 @@ public class HelloWorld {
 
         app.get("/", ctx -> ctx.render("index.jte"));
 
-        app.get("users/build", ctx -> {
+        // build user
+        app.get(NamedRoutes.buildUserPath(), ctx -> {
             ctx.contentType("text/html; charset=UTF-8");
             var page = new BuildUserPage();
             ctx.render("users/build.jte", model("page", page));
         });
 
-        app.get("/users", ctx -> {
+        // users
+        app.get(NamedRoutes.usersPath(), ctx -> {
 //            var pageNum = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
             var pageNum = ctx.queryParam("page");
             var users = List.of(
@@ -44,7 +47,8 @@ public class HelloWorld {
             ctx.render("users/page.jte", model("page", usersPage));
         });
 
-        app.get("/users/{id}", ctx -> {
+        // users id
+        app.get(NamedRoutes.usersPath("{id}"), ctx -> {
             var id = ctx.pathParamAsClass("id", Long.class).getOrDefault(1L);
             User user = new User(id, "John", "john@ya.ru", "5454", 35);
             UserPage page = new UserPage(user);
@@ -61,7 +65,8 @@ public class HelloWorld {
             ctx.result("<h2>" + escapedId + "</h2>");
         });
 
-        app.post("/users", ctx -> {
+        // users
+        app.post(NamedRoutes.usersPath(), ctx -> {
             var name = ctx.formParam("name").trim();
             var email = ctx.formParam("email").trim().toLowerCase();
             var age = 25;
@@ -78,6 +83,7 @@ public class HelloWorld {
                 ctx.redirect("/users");
             } catch (ValidationException e) {
                 var page = new BuildUserPage(name, email, age, e.getErrors());
+                ctx.contentType("text/html; charset=UTF-8");
                 ctx.render("users/build.jte", model("page", page));
             }
         });

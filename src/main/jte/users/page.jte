@@ -1,3 +1,4 @@
+@import org.example.util.NamedRoutes
 @import org.example.dto.UsersPage
 @param UsersPage page
 
@@ -6,7 +7,7 @@ page = page,
 content = @`
     <p>Welcome, ${page.getHeader()}.</p>
 
-    <form action="/users" method="get">
+    <form action="${NamedRoutes.usersPath()}" method="get">
         <input type="search" name="page" value="${page.getHeader()}">
         <input type="submit" value="Search">
     </form>
