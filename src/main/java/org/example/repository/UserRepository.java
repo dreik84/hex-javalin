@@ -30,4 +30,8 @@ public class UserRepository {
     public static List<User> getEntities() {
         return entities;
     }
+
+    public static void delete(Long id) {
+        entities.removeIf(user -> user.getId() == id);
+    }
 }
