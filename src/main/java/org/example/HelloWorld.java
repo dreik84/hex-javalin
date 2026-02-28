@@ -1,21 +1,8 @@
 package org.example;
 
 import io.javalin.Javalin;
-import io.javalin.http.NotFoundResponse;
 import io.javalin.rendering.template.JavalinJte;
-import io.javalin.validation.ValidationException;
-import org.apache.commons.text.StringEscapeUtils;
 import org.example.controller.UsersController;
-import org.example.dto.BuildUserPage;
-import org.example.dto.UserPage;
-import org.example.dto.UsersPage;
-import org.example.model.User;
-import org.example.repository.UserRepository;
-import org.example.util.NamedRoutes;
-
-import java.util.List;
-
-import static io.javalin.rendering.template.TemplateUtil.model;
 
 public class HelloWorld {
     public static void main(String[] args) {
@@ -25,7 +12,10 @@ public class HelloWorld {
             config.fileRenderer(new JavalinJte());
         });
 
+        app.before(ctx -> System.out.println("before middleware"));
+//        app.before(Context::skipRemainingHandlers); // terminal
         app.get("/", ctx -> ctx.render("index.jte"));
+        app.after(ctx -> System.out.println("after middleware"));
 
         app.get("/users", UsersController::index);
         app.get("/users/build", UsersController::build);
