@@ -18,6 +18,14 @@ public final class NamedRoutes {
         return "/users/build";
     }
 
+    public static String sessionsPath() {
+        return "/sessions";
+    }
+
+    public static String buildSessionPath() {
+        return "/sessions/build";
+    }
+
     public static String coursesPath() {
         return "/courses";
     }

@@ -2,6 +2,7 @@ package org.example;
 
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
+import org.example.controller.SessionsController;
 import org.example.controller.UsersController;
 import org.example.dto.MainPage;
 
@@ -19,7 +20,7 @@ public class HelloWorld {
 //        app.before(Context::skipRemainingHandlers); // terminal
         app.get("/", ctx -> {
             var visited = Boolean.valueOf(ctx.cookie("visited"));
-            var page = new MainPage(visited);
+            var page = new MainPage(visited, ctx.sessionAttribute("currentUser"));
             ctx.render("index.jte", model("page", page));
             ctx.cookie("visited", String.valueOf(true));
         });
@@ -32,6 +33,13 @@ public class HelloWorld {
         app.get("/users/{id}/edit", UsersController::edit);
         app.patch("/users/{id}", UsersController::update);
         app.delete("/users/{id}", UsersController::destroy);
+
+        // Отображение формы логина
+        app.get("/sessions/build", SessionsController::build);
+        // Процесс логина
+        app.post("/sessions", SessionsController::create);
+        // Процесс выхода из аккаунта
+        app.delete("/sessions", SessionsController::destroy);
 
 //        // build user
 //        app.get(NamedRoutes.buildUserPath(), ctx -> {

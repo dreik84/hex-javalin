@@ -16,6 +16,10 @@
         @if(!page.isVisited())
             <p>Это сообщение показывается только один раз.</p>
         @endif
+        @if(page.getCurrentUser() != null)
+            Welcome, ${page.getCurrentUser()}
+            Чтобы разлогиниться, удалите куку JSESSIONID из браузера
+        @endif
     </main>
 </div>
 </body>
