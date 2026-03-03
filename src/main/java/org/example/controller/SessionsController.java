@@ -14,6 +14,7 @@ public class SessionsController {
         // Тут должна быть проверка пароля
 
         ctx.sessionAttribute("currentUser", nickname);
+        ctx.sessionAttribute("flash", "Success");
         ctx.redirect("/");
     }
 

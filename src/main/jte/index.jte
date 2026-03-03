@@ -20,6 +20,9 @@
             Welcome, ${page.getCurrentUser()}
             Чтобы разлогиниться, удалите куку JSESSIONID из браузера
         @endif
+        @if(page.getFlash() != null)
+            <h2>${page.getFlash()}</h2>
+        @endif
     </main>
 </div>
 </body>

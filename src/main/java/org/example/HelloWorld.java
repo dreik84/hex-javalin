@@ -20,7 +20,9 @@ public class HelloWorld {
 //        app.before(Context::skipRemainingHandlers); // terminal
         app.get("/", ctx -> {
             var visited = Boolean.valueOf(ctx.cookie("visited"));
-            var page = new MainPage(visited, ctx.sessionAttribute("currentUser"));
+            String currentUser = ctx.sessionAttribute("currentUser");
+            String flash = ctx.consumeSessionAttribute("flash");
+            var page = new MainPage(visited, currentUser, flash);
             ctx.render("index.jte", model("page", page));
             ctx.cookie("visited", String.valueOf(true));
         });
