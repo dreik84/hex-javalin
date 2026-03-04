@@ -5,6 +5,10 @@ import io.javalin.rendering.template.JavalinJte;
 import org.example.controller.SessionsController;
 import org.example.controller.UsersController;
 import org.example.dto.MainPage;
+import org.example.dto.UsersPage;
+import org.example.model.User;
+
+import java.util.List;
 
 import static io.javalin.rendering.template.TemplateUtil.model;
 
@@ -41,7 +45,16 @@ public class HelloWorld {
         // Процесс логина
         app.post("/sessions", SessionsController::create);
         // Процесс выхода из аккаунта
-        app.delete("/sessions", SessionsController::destroy);
+
+
+//        app.get("/users", ctx -> {
+//            var page = new UsersPage(List.of(
+//                    new User(1L, "John", "john@gmail.com", "123", 23),
+//                    new User(2L, "Sam", "sam@gmail.com", "321", 44)
+//            ), "Users Header");
+//            page.setFlash(ctx.consumeSessionAttribute("flash"));
+//            ctx.render("users/index.jte", model("page", page));
+//        });
 
 //        // build user
 //        app.get(NamedRoutes.buildUserPath(), ctx -> {

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class UsersPage {
+public class UsersPage extends BasePage {
     private List<User> users;
     private String header;
 }
