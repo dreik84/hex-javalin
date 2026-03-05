@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class UserRepository {
+public class UserRepository extends BaseRepository {
 
     private static final List<User> entities = new ArrayList<>();
 
