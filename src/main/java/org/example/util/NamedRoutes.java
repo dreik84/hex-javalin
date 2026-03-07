@@ -22,6 +22,18 @@ public final class NamedRoutes {
         return "/cars";
     }
 
+    public static String buildCarPath() {
+        return "/cars/build";
+    }
+
+    public static String carPath(Long id) {
+        return carPath(String.valueOf(id));
+    }
+
+    public static String carPath(String id) {
+        return "/cars/" + id;
+    }
+
     public static String sessionsPath() {
         return "/sessions";
     }

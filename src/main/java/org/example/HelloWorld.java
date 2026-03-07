@@ -4,10 +4,12 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
+import org.example.controller.CarController;
 import org.example.controller.SessionsController;
 import org.example.controller.UsersController;
 import org.example.dto.MainPage;
 import org.example.repository.BaseRepository;
+import org.example.util.NamedRoutes;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -51,6 +53,11 @@ public class HelloWorld {
             ctx.cookie("visited", String.valueOf(true));
         });
         app.after(ctx -> System.out.println("after middleware"));
+
+        app.get(NamedRoutes.carsPath(), CarController::index);
+        app.get(NamedRoutes.buildCarPath(), CarController::build);
+        app.get(NamedRoutes.carPath("{id}"), CarController::show);
+        app.post(NamedRoutes.carsPath(), CarController::create);
 
         app.get("/users", UsersController::index);
         app.get("/users/build", UsersController::build);
