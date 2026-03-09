@@ -7,6 +7,7 @@ plugins {
     id("io.freefair.lombok") version "8.13.1"
     id("com.github.ben-manes.versions") version "0.52.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("org.gretty") version "4.1.0"
 }
 
 application {
@@ -20,6 +21,12 @@ repositories {
     mavenCentral()
 }
 
+gretty {
+    // Эта настройка веб-сервера указывает, что нужно работать от корня
+    // По умолчанию базовый путь равен названию проекта
+    contextPath = '/'
+}
+
 dependencies {
     implementation("com.h2database:h2:2.3.232")
     implementation("com.zaxxer:HikariCP:6.3.0")
@@ -30,6 +37,8 @@ dependencies {
     implementation("io.javalin:javalin:6.6.0")
     implementation("io.javalin:javalin-bundle:6.6.0")
     implementation("io.javalin:javalin-rendering:6.6.0")
+
+    implementation("jakarta.servlet:jakarta.servlet-api:6.0.0")
 
     testImplementation("org.assertj:assertj-core:3.27.3")
     testImplementation(platform("org.junit:junit-bom:5.12.2"))
